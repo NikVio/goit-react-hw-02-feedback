@@ -1,35 +1,7 @@
 // import { render } from '@testing-library/react';
 import { GlobalStyle } from 'GlobalStyle';
 import { Component } from 'react';
-
-export const FeedbackOptions = ({ options, onLeaveFeedback }) => {
-  return (
-    <div>
-      {options.map(option => {
-        return (
-          <button onClick={onLeaveFeedback} key={option}>
-            {option}
-          </button>
-        );
-      })}
-    </div>
-  );
-};
-// stats: { good, neutral, bad },
-// Total,
-// positivePercentage,
-// export const Statistics = ({
-
-//   stats: {good}
-// }) => {
-//   <div>
-//     <p>Good: {good}</p>
-//     <p>Neutral: {neutral}</p>
-//     <p>Bad: {bad}</p>
-//     <p>Total: {Total}</p>
-//     <p>Positive feedback: {positivePercentage}</p>
-//   </div>;
-// };
+import { Section } from './Section/Section';
 
 export class App extends Component {
   state = {
@@ -38,50 +10,45 @@ export class App extends Component {
     bad: 0,
   };
 
-  updateGood = () => {
+  handleFeedback = evt => {
+    const targetValue = evt.target.textContent.toLowerCase();
+    console.log(targetValue);
+
     this.setState(prevState => {
       return {
-        good: prevState.good + 1,
+        [targetValue]: prevState[targetValue] + 1,
       };
     });
   };
 
-  updateNeutral = () => {
-    this.setState(prevState => {
-      return {
-        neutral: prevState.neutral + 1,
-      };
-    });
+  countTotalFeedback = () => {
+    const { good, neutral, bad } = this.state;
+    return good + neutral + bad;
   };
 
-  updateBad = () => {
-    this.setState(prevState => {
-      return {
-        bad: prevState.bad + 1,
-      };
-    });
+  countPositiveFeedbackPercentage = () => {
+    const { good } = this.state;
+    const total = this.countTotalFeedback();
+    return Math.round((good / total) * 100);
   };
 
   render() {
+    const total = this.countTotalFeedback();
+    const positivePercentage = this.countPositiveFeedbackPercentage();
     return (
       <div>
-        <FeedbackOptions
-          options={['Good', 'Neutral', 'Bad']}
-          onLeaveFeedback={this.updateGood}
-        />
-        {/* <Statistics stats={stats} /> */}
+        <Section
+          title="Please leave feedback"
+          onLeaveFeedback={this.handleFeedback}
+        ></Section>
+        <Section
+          title="Statistics"
+          stats={this.state}
+          total={total}
+          positivePercentage={positivePercentage}
+        ></Section>
         <GlobalStyle />
       </div>
     );
   }
 }
-
-// export const App = () => {
-//   return (
-//     <div>
-//       <Button />
-//       <Statistics stats={stats} />
-//
-//     </div>
-//   );
-// };
