@@ -10,7 +10,7 @@ export const Section = ({
 }) => {
   return (
     <div>
-      <p>{title}</p>
+      <h2>{title}</h2>
       {title === 'Please leave feedback' ? (
         <FeedbackOptions
           options={['Good', 'Neutral', 'Bad']}

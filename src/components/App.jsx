@@ -1,6 +1,7 @@
 // import { render } from '@testing-library/react';
 import { GlobalStyle } from 'GlobalStyle';
 import { Component } from 'react';
+import { BoxFeedback } from './App.styled';
 import { Section } from './Section/Section';
 
 export class App extends Component {
@@ -12,7 +13,6 @@ export class App extends Component {
 
   handleFeedback = evt => {
     const targetValue = evt.target.textContent.toLowerCase();
-    console.log(targetValue);
 
     this.setState(prevState => {
       return {
@@ -36,7 +36,7 @@ export class App extends Component {
     const total = this.countTotalFeedback();
     const positivePercentage = this.countPositiveFeedbackPercentage();
     return (
-      <div>
+      <BoxFeedback>
         <Section
           title="Please leave feedback"
           onLeaveFeedback={this.handleFeedback}
@@ -48,7 +48,7 @@ export class App extends Component {
           positivePercentage={positivePercentage}
         ></Section>
         <GlobalStyle />
-      </div>
+      </BoxFeedback>
     );
   }
 }
